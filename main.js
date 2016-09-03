@@ -7,7 +7,7 @@ app.config(function($routeProvider) {
     $routeProvider
 
     // route for the welcome page
-    .when('/', {
+        .when('/', {
         templateUrl: 'main.html',
         controller: 'TopgitController'
     })
@@ -25,10 +25,38 @@ app.config(function($routeProvider) {
     // });
 });
 
-app.controller("TopgitController",['$scope', function($scope) {
+app.controller("TopgitController", ['$scope', 'Github', function($scope, github) {
+
+    $scope.query = "";
+
+    $scope.repos = {
+
+    };
+
+    $scope.search = function () {
+        console.log($scope.query);
+    };
+
+    // github.getRepositories(function () {
+    //     console.log("Controller done");
+    // });
+}]);
+
+app.controller("TextController", ['$scope', function($scope) {
 
 }]);
 
-app.controller("TextController",['$scope', function($scope) {
+app.service("Github", ['$http', function($http) {
+
+    var baseurl = "https://api.github.com/";
+
+    return {
+        getRepositories: function(query, callback) {
+            $http.get(baseurl + "search/repositories?q="+query).success(function(data) {
+                console.log(data);
+                callback(data);
+            });
+        }
+    };
 
 }]);
