@@ -19,7 +19,7 @@ app.config(function($routeProvider) {
     });
 });
 
-app.controller("TopgitController", ['$scope', 'Github', function($scope, github) {
+app.controller("TopgitController", ['$scope', 'Github', '$http', function($scope, github, $http) {
 
     $scope.query = "";
 
@@ -62,6 +62,8 @@ app.controller("TopgitController", ['$scope', 'Github', function($scope, github)
         barColor: 'rgba(52,152,219,.5)'
     };
 
+    $scope.languages = [];
+
     $scope.search = function() {
         console.log("Search called");
         github.searchRepoByLang($scope.query, $scope.minStar, function(data, status, headers) {
@@ -84,9 +86,10 @@ app.controller("TopgitController", ['$scope', 'Github', function($scope, github)
         })
     };
 
-    // github.getRepositories(function () {
-    //     console.log("Controller done");
-    // });
+    $http.get("https://gist.githubusercontent.com/mayurah/5a4d45d12615d52afc4d1c126e04c796/raw/ccbba9bb09312ae66cf85b037bafc670356cf2c9/languages.json").success(function(data){
+        $scope.languages = data;
+        console.log(data);
+    });
 }]);
 
 app.controller("TextController", ['$scope', function($scope) {

@@ -15,6 +15,16 @@
             margin-top: 30px;
             margin-bottom: 30px;
         }
+
+        .icon-box {
+            margin-top: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: #eee;
+            max-width: 100px;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
     </style>
 
 </head>
@@ -23,9 +33,7 @@
     <ng-view></ng-view>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js">
-    </script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.3/ui-bootstrap.min.js">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.1.3/ui-bootstrap-tpls.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
@@ -64,7 +72,7 @@
                     <h4>Repositories</h4>
                     <form>
                         <div class="form-group">
-                            <input type="text" ng-model="query" ng-enter="search()" class="form-control" placeholder="Search by Language">
+                            <input type="text" ng-model="query" uib-typeahead="language for language in languages | filter:$viewValue | limitTo:8" ng-enter="search()" class="form-control" placeholder="Search by Language">
                         </div>
                     </form>
                     <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" role="alert">{{alert.msg}}</div>
@@ -106,16 +114,16 @@
             <hr />
             <div class="row">
                 <div class="col-md-8">
-                    <h3>{{details.full_name}}</h3>
+                    <h4>{{details.owner.login}}/<b>{{details.name}}</b></h4>
                     <p>{{details.description}}</p>
                     <p class="text-muted">{{details.language}} • By {{details.owner.login}}</p>
                 </div>
-                <div class="col-md-2">
-                    <p class="text-center"><i class="fa fa-3x fa-star" aria-hidden="true"></i></p>
+                <div class="col-md-2 icon-box">
+                    <p class="text-center"><i class="fa fa-2x fa-star" aria-hidden="true"></i></p>
                     <p class="text-center">{{details.stargazers_count}}</p>
                 </div>
-                <div class="col-md-2">
-                    <p class="text-center"><i class="fa fa-3x fa-code-fork" aria-hidden="true"></i></span></p>
+                <div class="col-md-2 icon-box">
+                    <p class="text-center"><i class="fa fa-2x fa-code-fork" aria-hidden="true"></i></span></p>
                     <p class="text-center">{{details.forks}}</p>
                 </div>
             </div>
