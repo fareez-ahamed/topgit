@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.bootstrap', 'ngRoute', 'angular-loading-bar', 'ngAnimate', 'rzModule']);
+var app = angular.module('app', ['ui.bootstrap', 'ngRoute', 'angular-loading-bar', 'ngAnimate', 'rzModule', 'ui.knob']);
 
 app.config(function($routeProvider) {
 
@@ -44,6 +44,24 @@ app.controller("TopgitController", ['$scope', 'Github', function($scope, github)
         remaining: 0
     };
 
+    $scope.rateKnobValue = 0;
+    $scope.rateKnob = {
+        scale: {
+            enabled: true,
+            type: 'lines',
+            color: 'gray',
+            width: 1,
+            quantity: 20,
+            height: 8
+        },
+        max: 10,
+        readOnly: true,
+        trackWidth: 30,
+        barWidth: 30,
+        trackColor: 'rgba(52,152,219,.1)',
+        barColor: 'rgba(52,152,219,.5)'
+    };
+
     $scope.search = function() {
         console.log("Search called");
         github.searchRepoByLang($scope.query, $scope.minStar, function(data, status, headers) {
@@ -53,8 +71,9 @@ app.controller("TopgitController", ['$scope', 'Github', function($scope, github)
                 msg: "There are " + data.total_count + " repositories with " + $scope.query + " code with more than " + $scope.minStar + " stars...",
                 type: "success"
             });
-            $scope.rate.limit = headers('X-RateLimit-Limit');
+            $scope.rate.limit = $scope.rateKnob.max = headers('X-RateLimit-Limit');
             $scope.rate.remaining = headers('X-RateLimit-Remaining');
+            $scope.rateKnobValue = $scope.rate.limit - $scope.rate.remaining;
             console.log($scope.rate);
         }, function() {
             $scope.alerts = [];
