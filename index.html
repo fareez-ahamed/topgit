@@ -15,6 +15,7 @@
         body {
             font-family: 'Roboto', sans-serif;
         }
+
         .top-margin {
             margin-top: 100px;
         }
@@ -97,7 +98,7 @@
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Rate Limit</h3>
+                            <h3 class="panel-title">Rate Limit Usage</h3>
                         </div>
                         <div class="panel-body">
                             <form>
@@ -131,7 +132,6 @@
                     <p class="text-center">{{details.forks}}</p>
                 </div>
             </div>
-
         </div>
     </script>
 
@@ -149,7 +149,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="#mystats">My Stats</a></li>
+                        <li><a href="#mystats">My Repos</a></li>
                     </ul>
 
                 </div>
@@ -161,6 +161,23 @@
 
     <script type="text/ng-template" id="mystats.html">
         <navbar></navbar>
+        <div class="container top-margin">
+            <div class="row">
+                <div class="col-md-3">
+                    <img class="img-responsive img-rounded" src="{{user.avatar_url}}" />
+                    <div>
+                        <h3>{{user.name}}<small></small</h3>
+                        <h4 class="text-muted"><i class="fa fa-user"></i> {{user.login}}</h4>
+                        <p><i class="fa fa-globe"></i> <a href="{{user.blog}}">{{user.blog}}</a></p>
+                        <p><i class="fa fa-envelope"></i> <a href="{{user.email}}">{{user.email}}</a></p>
+                        <p><i class="fa fa-map-marker"></i> <a href="{{user.location}}">{{user.location}}</a></p>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <repository ng-repeat="repo in repos" details="repo"></repository>
+                </div>
+            </div>
+        </div>
     </script>
 
     <script src="main.js"></script>

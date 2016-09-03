@@ -15,7 +15,7 @@ app.config(function($routeProvider) {
     // route for my stats
     .when('/mystats', {
         templateUrl: 'mystats.html',
-        controller: 'MyStatsController'
+        controller: 'MyReposController'
     });
 });
 
@@ -93,8 +93,8 @@ app.controller("TopgitController", ['$scope', 'Github', '$http', function($scope
 
     $scope.$watch('currentPage', function(newVal, oldVal) {
 
-        if(newVal != oldVal) {
-            console.log("Current Page"+newVal);
+        if (newVal != oldVal) {
+            console.log("Current Page" + newVal);
             github.searchRepoByLang($scope.query, $scope.minStar, $scope.currentPage, $scope.searchSuccess, $scope.searchFailure);
         }
     });
@@ -105,7 +105,22 @@ app.controller("TopgitController", ['$scope', 'Github', '$http', function($scope
     });
 }]);
 
-app.controller("MyStatsController", ['$scope', function($scope) {
+app.controller("MyReposController", ['$scope', 'Github', function($scope, github) {
+
+    $scope.repos = [];
+    $scope.user = {};
+
+    $scope.success = function(data) {
+        console.log(data);
+        $scope.repos = data;
+    };
+
+    github.getRepos('fareez-ahamed', $scope.success);
+
+    github.getUser('fareez-ahamed',function (data) {
+        $scope.user = data;
+        console.log(data);
+    });
 
 }]);
 
@@ -115,7 +130,7 @@ app.service("Github", ['$http', function($http) {
 
     return {
         searchRepos: function(query, page, callback, error) {
-            var url = baseurl + "search/repositories?q=" + encodeURIComponent(query) + "&page="+page+"&sort=stars&order=desc";
+            var url = baseurl + "search/repositories?q=" + encodeURIComponent(query) + "&page=" + page + "&sort=stars&order=desc";
             console.log(url);
             $http.get(url).success(function(data, status, headers, config) {
                 console.log(headers('X-RateLimit-Limit'));
@@ -125,6 +140,20 @@ app.service("Github", ['$http', function($http) {
 
         searchRepoByLang: function(lang, min_star, page, callback, error) {
             this.searchRepos("stars:>=" + min_star + " language:" + lang, page, callback, error);
+        },
+
+        getRepos: function(username, callback) {
+            var url = "https://api.github.com/users/" + username + "/repos";
+            $http.get(url).success(function(data) {
+                callback(data);
+            });
+        },
+
+        getUser: function(username, callback) {
+            var url = "https://api.github.com/users/" + username;
+            $http.get(url).success(function(data) {
+                callback(data);
+            });
         }
     };
 
@@ -157,8 +186,8 @@ app.directive('ngEnter', function() {
 app.directive("navbar", function() {
     return {
         templateUrl: 'navbar.html'
-        // scope: {
-        //     details: '='
-        // }
+            // scope: {
+            //     details: '='
+            // }
     };
 });
