@@ -56,11 +56,33 @@
                 </div>
                 <!--/.container-fluid -->
             </nav>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <h4>Repositories</h4>
+                    <repository ng-repeat="repo in repos" details="repo"></repository>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Search Criteria</h3>
+                        </div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </script>
 
-    <script type="text/ng-template" id="text.html">
-        Text
+    <script type="text/ng-template" id="repository.html">
+        <div>
+            <hr />
+            <h4>{{details.full_name}}</h4>
+            <p>{{details.description}}</p>
+            <p class="text-muted">{{details.language}} | By {{details.owner.login}}</p>
+        </div>
     </script>
     <script src="main.js"></script>
 

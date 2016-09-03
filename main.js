@@ -33,8 +33,11 @@ app.controller("TopgitController", ['$scope', 'Github', function($scope, github)
 
     };
 
-    $scope.search = function () {
-        console.log($scope.query);
+    $scope.search = function() {
+        console.log("Search called");
+        github.getRepositories($scope.query, function (repos) {
+            $scope.repos = repos;
+        })
     };
 
     // github.getRepositories(function () {
@@ -52,11 +55,21 @@ app.service("Github", ['$http', function($http) {
 
     return {
         getRepositories: function(query, callback) {
-            $http.get(baseurl + "search/repositories?q="+query).success(function(data) {
+            $http.get(baseurl + "search/repositories?q=" + query).success(function(data) {
                 console.log(data);
-                callback(data);
+                callback(data.items);
             });
         }
     };
 
 }]);
+
+app.directive("repository", function() {
+
+    return {
+        templateUrl: 'repository.html',
+        scope : {
+            details : '='
+        }
+    };
+});
