@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.bootstrap', 'ngRoute', 'angular-loading-bar', 'ngAnimate']);
+var app = angular.module('app', ['ui.bootstrap', 'ngRoute', 'angular-loading-bar', 'ngAnimate', 'rzModule']);
 
 app.config(function($routeProvider) {
 
@@ -35,20 +35,30 @@ app.controller("TopgitController", ['$scope', 'Github', function($scope, github)
 
     $scope.alerts = [];
 
+    $scope.minStar = 0;
+
+    $scope.starSliderOptions = {
+        value: 1000,
+        options: {
+            floor: 0,
+            ceil: 100
+        }
+    }
+
     $scope.search = function() {
         console.log("Search called");
-        github.searchRepoByLang($scope.query, 0, function (data) {
+        github.searchRepoByLang($scope.query, $scope.minStar, function(data) {
             $scope.repos = data.items;
             $scope.alerts = [];
             $scope.alerts.push({
-                msg : "There are "+data.total_count+" repositories with "+$scope.query+" code... :)",
-                type : "success"
+                msg: "There are " + data.total_count + " repositories with " + $scope.query + " code with more than "+$scope.minStar+" stars...",
+                type: "success"
             });
-        }, function () {
+        }, function() {
             $scope.alerts = [];
             $scope.alerts.push({
-                msg : "We are unable to fetch the data...! :(",
-                type : "danger"
+                msg: "We are unable to fetch the data...! :(",
+                type: "danger"
             });
         })
     };
@@ -75,7 +85,7 @@ app.service("Github", ['$http', function($http) {
         },
 
         searchRepoByLang: function(lang, min_star, callback, error) {
-            this.searchRepos("stars:>="+min_star+" language:"+lang, callback, error)
+            this.searchRepos("stars:>=" + min_star + " language:" + lang, callback, error)
         }
     };
 
@@ -85,17 +95,17 @@ app.directive("repository", function() {
 
     return {
         templateUrl: 'repository.html',
-        scope : {
-            details : '='
+        scope: {
+            details: '='
         }
     };
 });
 
-app.directive('ngEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if(event.which === 13) {
-                scope.$apply(function (){
+app.directive('ngEnter', function() {
+    return function(scope, element, attrs) {
+        element.bind("keydown keypress", function(event) {
+            if (event.which === 13) {
+                scope.$apply(function() {
                     scope.$eval(attrs.ngEnter);
                 });
 
