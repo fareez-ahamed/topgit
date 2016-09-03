@@ -77,6 +77,9 @@
                     </form>
                     <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" role="alert">{{alert.msg}}</div>
                     <repository ng-repeat="repo in repos" details="repo"></repository>
+                    <div>
+                        <ul uib-pagination total-items="totalItems" ng-model="currentPage" items-per-page="30" max-size="5" force-ellipses="true"></ul>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-default">

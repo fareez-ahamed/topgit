@@ -64,29 +64,44 @@ app.controller("TopgitController", ['$scope', 'Github', '$http', function($scope
 
     $scope.languages = [];
 
+    $scope.currentPage = 1;
+    $scope.totalItems = 0;
+
     $scope.search = function() {
         console.log("Search called");
-        github.searchRepoByLang($scope.query, $scope.minStar, function(data, status, headers) {
-            $scope.repos = data.items;
-            $scope.alerts = [];
-            $scope.alerts.push({
-                msg: "There are " + data.total_count + " repositories with " + $scope.query + " code with more than " + $scope.minStar + " stars...",
-                type: "success"
-            });
-            $scope.rate.limit = $scope.rateKnob.max = headers('X-RateLimit-Limit');
-            $scope.rate.remaining = headers('X-RateLimit-Remaining');
-            $scope.rateKnobValue = $scope.rate.limit - $scope.rate.remaining;
-            console.log($scope.rate);
-        }, function() {
-            $scope.alerts = [];
-            $scope.alerts.push({
-                msg: "We are unable to fetch the data...! :(",
-                type: "danger"
-            });
-        })
+        github.searchRepoByLang($scope.query, $scope.minStar, $scope.currentPage, $scope.searchSuccess, $scope.searchFailure)
     };
 
-    $http.get("https://gist.githubusercontent.com/mayurah/5a4d45d12615d52afc4d1c126e04c796/raw/ccbba9bb09312ae66cf85b037bafc670356cf2c9/languages.json").success(function(data){
+    $scope.searchSuccess = function(data, status, headers) {
+        $scope.repos = data.items;
+        $scope.alerts = [];
+        $scope.alerts.push({
+            msg: "There are " + data.total_count + " repositories with " + $scope.query + " code with more than " + $scope.minStar + " stars...",
+            type: "success"
+        });
+        $scope.rate.limit = $scope.rateKnob.max = headers('X-RateLimit-Limit');
+        $scope.rate.remaining = headers('X-RateLimit-Remaining');
+        $scope.rateKnobValue = $scope.rate.limit - $scope.rate.remaining;
+        $scope.totalItems = data.total_count;
+    };
+
+    $scope.searchFailure = function() {
+        $scope.alerts = [];
+        $scope.alerts.push({
+            msg: "We are unable to fetch the data...! :(",
+            type: "danger"
+        });
+    };
+
+    $scope.$watch('currentPage', function(newVal, oldVal) {
+
+        if(newVal != oldVal) {
+            console.log("Current Page"+newVal);
+            github.searchRepoByLang($scope.query, $scope.minStar, $scope.currentPage, $scope.searchSuccess, $scope.searchFailure);
+        }
+    });
+
+    $http.get("https://gist.githubusercontent.com/mayurah/5a4d45d12615d52afc4d1c126e04c796/raw/ccbba9bb09312ae66cf85b037bafc670356cf2c9/languages.json").success(function(data) {
         $scope.languages = data;
         console.log(data);
     });
@@ -101,16 +116,22 @@ app.service("Github", ['$http', function($http) {
     var baseurl = "https://api.github.com/";
 
     return {
-        searchRepos: function(query, callback, error) {
-            $http.get(baseurl + "search/repositories?q=" + query).success(function(data, status, headers, config) {
+        searchRepos: function(query, page, callback, error) {
+            var url = baseurl + "search/repositories?q=" + encodeURIComponent(query) + "&page="+page+"&sort=stars&order=desc";
+            console.log(url);
+            $http.get(url).success(function(data, status, headers, config) {
                 console.log(headers('X-RateLimit-Limit'));
                 callback(data, status, headers, config);
             }).error(error);
         },
 
-        searchRepoByLang: function(lang, min_star, callback, error) {
-            this.searchRepos("stars:>=" + min_star + " language:" + lang, callback, error)
+        searchRepoByLang: function(lang, min_star, page, callback, error) {
+            this.searchRepos("stars:>=" + min_star + " language:" + lang, page, callback, error);
         }
+        //
+        // searchRepoByLang: function(lang, min_star, page, callback, error) {
+        //     this.searchRepos("stars:>=" + min_star + " language:" + lang + "&page="+page, callback, error);
+        // },
     };
 
 }]);
