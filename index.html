@@ -10,13 +10,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/5.4.3/rzslider.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Tamma|Roboto:300,400,700" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
         }
         .top-margin {
             margin-top: 100px;
+        }
+
+        #brand {
+            font-family: 'Baloo Tamma', cursive;
         }
 
         .icon-box {
@@ -54,35 +58,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-knob/0.1.3/ng-knob.min.js"></script>
 
     <script type="text/ng-template" id="main.html">
-        <!-- Static navbar -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-                    <a class="navbar-brand" href="#">Topgit</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
 
-                    </ul>
-
-                </div>
-                <!--/.nav-collapse -->
-            </div>
-            <!--/.container-fluid -->
-        </nav>
+        <navbar></navbar>
 
         <div class="container top-margin">
 
 
             <div class="row">
                 <div class="col-md-8">
-                    <h4>Repositories</h4>
                     <form>
                         <div class="form-group">
                             <input type="text" ng-model="query" uib-typeahead="language for language in languages | filter:$viewValue | limitTo:8" ng-enter="search()" class="form-control" placeholder="Search by Language">
@@ -151,6 +134,35 @@
 
         </div>
     </script>
+
+    <script type="text/ng-template" id="navbar.html">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+                    <a class="navbar-brand" id="brand" href="#/">Topgit</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#mystats">My Stats</a></li>
+                    </ul>
+
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+            <!--/.container-fluid -->
+        </nav>
+    </script>
+
+    <script type="text/ng-template" id="mystats.html">
+        <navbar></navbar>
+    </script>
+
     <script src="main.js"></script>
 
 </body>

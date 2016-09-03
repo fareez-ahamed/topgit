@@ -6,16 +6,16 @@ app.config(function($routeProvider) {
 
     $routeProvider
 
-    // route for the welcome page
+    // route for search page
         .when('/', {
         templateUrl: 'main.html',
         controller: 'TopgitController'
     })
 
-    // route for the Text page
-    .when('/text', {
-        templateUrl: 'text.html',
-        controller: 'TextController'
+    // route for my stats
+    .when('/mystats', {
+        templateUrl: 'mystats.html',
+        controller: 'MyStatsController'
     });
 });
 
@@ -105,7 +105,7 @@ app.controller("TopgitController", ['$scope', 'Github', '$http', function($scope
     });
 }]);
 
-app.controller("TextController", ['$scope', function($scope) {
+app.controller("MyStatsController", ['$scope', function($scope) {
 
 }]);
 
@@ -151,5 +151,14 @@ app.directive('ngEnter', function() {
                 event.preventDefault();
             }
         });
+    };
+});
+
+app.directive("navbar", function() {
+    return {
+        templateUrl: 'navbar.html'
+        // scope: {
+        //     details: '='
+        // }
     };
 });
