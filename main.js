@@ -1,21 +1,22 @@
 var app = angular.module('app', ['ui.bootstrap', 'ngRoute']);
 
-app.controller("MainController")
-
 app.config(function($routeProvider) {
+
+    console.log("Hi");
+
     $routeProvider
 
     // route for the welcome page
-        .when('/', {
-        templateUrl: '#welcome',
-        controller: 'WelcomeController'
+    .when('/', {
+        templateUrl: 'main.html',
+        controller: 'TopgitController'
     })
 
     // route for the Text page
     .when('/text', {
-        templateUrl: '#getout',
+        templateUrl: 'text.html',
         controller: 'TextController'
-    })
+    });
 
     // // route for the contact page
     // .when('/corpus', {
@@ -24,10 +25,10 @@ app.config(function($routeProvider) {
     // });
 });
 
-app.controller("WelcomeController", function($scope) {
+app.controller("TopgitController",['$scope', function($scope) {
 
-});
+}]);
 
-app.controller("TextController", function($scope) {
+app.controller("TextController",['$scope', function($scope) {
 
-});
+}]);
