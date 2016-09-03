@@ -76,7 +76,7 @@
                             <form>
                                 <div class="form-group">
                                     <label>Minimum Stars</label>
-                                    <rzslider rz-slider-model="minStar" rz-slider-options="{floor: 0, ceil: 450}"></rzslider>
+                                    <rzslider rz-slider-model="minStar" rz-slider-options="{floor: 0, ceil: 100000, stepsArray:[10,20,50,100,200,500,1000,2000,4000,8000,15000,25000,50000,100000], showTicks:true}"></rzslider>
                                 </div>
                             </form>
                         </div>
@@ -89,9 +89,9 @@
     <script type="text/ng-template" id="repository.html">
         <div>
             <hr />
-            <h4>{{details.full_name}}</h4>
+            <h3>{{details.full_name}}</h3>
             <p>{{details.description}}</p>
-            <p class="text-muted">{{details.language}} | By {{details.owner.login}}</p>
+            <p class="text-muted">{{details.language}} • By {{details.owner.login}} • {{details.stargazers_count}} stars</p>
         </div>
     </script>
     <script src="main.js"></script>
