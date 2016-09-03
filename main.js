@@ -23,9 +23,7 @@ app.controller("TopgitController", ['$scope', 'Github', '$http', function($scope
 
     $scope.query = "";
 
-    $scope.repos = {
-
-    };
+    $scope.repos = [];
 
     $scope.alerts = [];
 
@@ -128,10 +126,6 @@ app.service("Github", ['$http', function($http) {
         searchRepoByLang: function(lang, min_star, page, callback, error) {
             this.searchRepos("stars:>=" + min_star + " language:" + lang, page, callback, error);
         }
-        //
-        // searchRepoByLang: function(lang, min_star, page, callback, error) {
-        //     this.searchRepos("stars:>=" + min_star + " language:" + lang + "&page="+page, callback, error);
-        // },
     };
 
 }]);
